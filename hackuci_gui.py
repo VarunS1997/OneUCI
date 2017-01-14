@@ -9,7 +9,7 @@ def get_dimmensions():
     return dimmensions
 
 class GUI:
-    def __init__(self, DISPLAY_WIDTH = 400, DISPLAY_HEIGHT = 640, PRIMARY_COLOR = "#1B3D6D", SECONDARY_COLOR = "#FFD200"):
+    def __init__(self, DISPLAY_WIDTH = 400, DISPLAY_HEIGHT = 640, PRIMARY_COLOR = "#00255D", SECONDARY_COLOR = "#FFD200"):
         self.__PRIMARY_COLOR = PRIMARY_COLOR
         self.__SECONDARY_COLOR = SECONDARY_COLOR
 
@@ -62,7 +62,7 @@ class GUI:
             y0 = 0
             if i+1 == self.__current_button:
                 self.uci_logo = tk.PhotoImage(file="icons/uci_logo.gif")
-                self.__buttons.append(self.__nav_canvas.create_image(x0 - 39 + self.__DIMMENSIONS["navigation"][0], y0 - 38 + self.__DIMMENSIONS["navigation"][1], image=self.uci_logo))
+                self.__buttons.append(self.__nav_canvas.create_image(x0 - 39 + self.__DIMMENSIONS["navigation"][0], y0 - 39 + self.__DIMMENSIONS["navigation"][1], image=self.uci_logo))
             else:
                 self.__buttons.append(self.__nav_canvas.create_rectangle(x0, y0, x0 + self.__DIMMENSIONS["navigation"][0], y0 + self.__DIMMENSIONS["navigation"][1], fill=(self.__PRIMARY_COLOR if i+1 != self.__current_button else self.__SECONDARY_COLOR)))
             
