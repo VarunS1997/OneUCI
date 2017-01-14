@@ -19,6 +19,7 @@ class GUI:
         self.__DIMMENSIONS = get_dimmensions()
 
         self.__buttons = []
+        self.__button_images = []
         self.__current_button = 3
 
         self.__top = tk.Tk()
@@ -51,6 +52,7 @@ class GUI:
     def draw_menu(self, event):
         self.clear_canvas(self.__nav_canvas)
         self.__buttons = []
+        self.__button_images = []
 
         canvas_width = self.__nav_canvas.winfo_width()
         canvas_height = self.__nav_canvas.winfo_height()
@@ -98,4 +100,5 @@ if __name__ == '__main__':
     print("FILE TESTING")
     win = GUI()
     win.run()
+    print("TEST CLONCLUDED")
     exit()

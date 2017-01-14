@@ -9,12 +9,20 @@ def make_default_form_data():
 def make_form_data(values: dict):
     result = {'EndTime': '', 'CourseCodes': '', 'ShowComments': '', 'Room': '', 'InstrName': '', 'YearTerm': '2017-03', 'MaxCap': '', 'ShowFinals': '', 'StartTime': '', 'Dept': 'CSE', 'Bldg': '', 'Breadth': 'ANY', 'FullCourses': '', 'CourseNum': '', 'Division': 'ANY', 'Days': '', 'ClassType': 'ALL', 'FontSize': '100', 'Units': '', 'CourseTitle': '', 'CancelledCourses': 'Exclude'}
 
-    for key in values:
-        result[key] = values[key]
+    if(values != None):
+        for key in values:
+            result[key] = values[key]
 
     return result
 
-def get_class_data(form_data):
+def get_classes(form_data):
+    classes_tree = HTMLTree()
+    classes_tree.get_HTML_from_string(_get_class_data(form_data))
+    classes_tree.parse_data()
+    results = classes_tree.find_nodes_by_attribute("valign", "top")
+    return results
+
+def _get_class_data(form_data):
     url = "https://www.reg.uci.edu/perl/WebSoc/"
     params = urllib.parse.urlencode(form_data).encode('UTF-8')
     request = urllib.request.Request(url, params)

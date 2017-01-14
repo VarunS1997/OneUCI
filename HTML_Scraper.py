@@ -98,7 +98,7 @@ class HTMLNode:
 
     def __eq__(self, other):
         if isinstance(other, HTMLNode):
-            return self.get_id() == other.get_id()
+            return self.get_id() == other.get_id() and self.get_data() == other.get_data()
         elif isinstance(other, str):
             return self.get_id() == other
         else:
@@ -106,7 +106,7 @@ class HTMLNode:
 
     def __ne__(self, other):
         if isinstance(other, HTMLNode):
-            return self.get_id() != other.get_id()
+            return self.get_id() != other.get_id() or self.get_data() != other.get_data()
         elif isinstance(other, str):
             return self.get_id() != other
         else:
@@ -216,7 +216,7 @@ class HTMLTree(HTMLParser):
         self.reset_data_struct()
         HTMLTree.processed_chars += len(self.__html)
         self.feed(self.__html)
-        debug_print("Parsing: Complete")
+        debug_print("Parsing: Complete; chars processed: " + len(self.__html))
 
     def find_nodes_by_attribute(self, attr: str, value: str):
         debug_print("Searching for attribute: {0} == {1} in:\n".format(attr, value))
