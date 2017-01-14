@@ -1,17 +1,10 @@
 from html.parser import HTMLParser
+from debugging import *
 import urllib.request
 
-debugging = False
-
-def debug_print(*args):
-    if(globals()["debugging"]):
-        for arg in args:
-            print(arg, end="")
-        print()
-
-def set_debugging(val):
-    globals()["debugging"] = val
-    print("Debugging: ", "ON" if val else "OFF")
+class RetrievalFailure(Exception):
+    """ Indicates a failure to get html data  from a source"""
+    pass
 
 class NodeType:
     tag, data = range(2)
@@ -137,6 +130,8 @@ class HTMLNode:
 
 
 class HTMLTree(HTMLParser):
+    processed_chars = 0
+
     def __init__(self):
         debug_print("Constructing Tree")
         self.__html = ""
@@ -157,7 +152,6 @@ class HTMLTree(HTMLParser):
 
     def get_HTML_from_string(self, html_data:str):
         self.__html = html_data
-        return True
 
     def get_HTML_from_file(self, filepath:str):
         debug_print("Attempting to read file data")
@@ -169,10 +163,9 @@ class HTMLTree(HTMLParser):
                 fileobj.close()
             if(self.__html == ""):
                 debug_print("File data reading failed")
-                return False
+                raise RetrievalFailure("File data reading failed")
             else:
                 debug_print("File data reading succeeded")
-                return True
 
     def get_HTML_from_url(self, url:str):
         debug_print("Attempting to read url data")
@@ -184,10 +177,9 @@ class HTMLTree(HTMLParser):
                 socket.close()
             if(self.__html == ""):
                 debug_print("Url data reading failed")
-                return False
+                raise RetrievalFailure("File data reading failed")
             else:
                 debug_print("Url data reading succeeded")
-                return True
 
     def handle_starttag(self, tag, attrs):
         newNode = None
@@ -222,6 +214,7 @@ class HTMLTree(HTMLParser):
     def parse_data(self):
         debug_print("Parsing... ")
         self.reset_data_struct()
+        HTMLTree.processed_chars += len(self.__html)
         self.feed(self.__html)
         debug_print("Parsing: Complete")
 
@@ -343,7 +336,7 @@ if __name__ == '__main__':
 
     testTree.parse_data()
 
-    command = input("[ID/ATTR/QUIT]: ").lower()
+    command = input("[ID/ATTR/PROC/QUIT]: ").lower()
     while(command != "quit"):
         if(command == "id"):
             results = testTree.find_node_by_id(input("ID: "))
@@ -351,5 +344,7 @@ if __name__ == '__main__':
         elif(command == "attr"):
             results = testTree.find_nodes_by_attribute(input("Attribute: "), input("Attribute value: "))
             print("Results: ", [str(node) for node in results])
-        command = input("[ID/ATTR/QUIT]: ").lower()
+        elif(command == "proc"):
+            print(HTMLTree.processed_chars)
+        command = input("[ID/ATTR/PROC/QUIT]: ").lower()
     print("TESTS CONCLUDED")
