@@ -60,11 +60,16 @@ class GUI:
         for i in range(5):
             x0 = i * self.__DIMMENSIONS["navigation"][0]
             y0 = 0
+
+            img_loc = ['uci_planner','uci_food','uci_maps','uci_webreg','uci_events']
+
             if i+1 == self.__current_button:
-                self.uci_logo = tk.PhotoImage(file="icons/uci_logo.gif")
-                self.__buttons.append(self.__nav_canvas.create_image(x0 - 39 + self.__DIMMENSIONS["navigation"][0], y0 - 39 + self.__DIMMENSIONS["navigation"][1], image=self.uci_logo))
+                self.icon = tk.PhotoImage(file='icons/' + img_loc[i] + '_selected.gif')
             else:
-                self.__buttons.append(self.__nav_canvas.create_rectangle(x0, y0, x0 + self.__DIMMENSIONS["navigation"][0], y0 + self.__DIMMENSIONS["navigation"][1], fill=(self.__PRIMARY_COLOR if i+1 != self.__current_button else self.__SECONDARY_COLOR)))
+                self.icon = tk.PhotoImage(file='icons/' + img_loc[i] + '.gif')
+
+            self.__buttons.append(self.__nav_canvas.create_image(x0 - 39 + self.__DIMMENSIONS["navigation"][0], y0 - 39 + self.__DIMMENSIONS["navigation"][1], image=self.icon))
+
             
                 
 
