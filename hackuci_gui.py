@@ -40,7 +40,8 @@ class GUI:
             self.canvas.delete(x)
             
     def draw_block(self, time1, time2,  place):
-        
+        pass
+    
     def draw_Planner(self):
         self.clear_view()
         self.canvas.create_rectangle(0, 0, 400, 40, fill="#1B3D6D")
