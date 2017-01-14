@@ -1,12 +1,16 @@
 from tkinter import *
 from datetime import date
+from VerticalScrollFrame import *
+
 
 class GUI:
     def __init__(self):
         
         self.gui = Tk()
+        
+        
 
-        self.canvas = Canvas(self.gui, width=400, height=640)
+        self.canvas = Scrollbar(self.gui)
 
         self.b1 = self.canvas.create_rectangle(0, 560, 80, 640, fill="#1B3D6D")
         self.b2 = self.canvas.create_rectangle(80, 560, 160, 640, fill="#1B3D6D")
@@ -43,9 +47,11 @@ class GUI:
         pass
     
     def draw_Planner(self):
+        
         self.clear_view()
         self.canvas.create_rectangle(0, 0, 400, 40, fill="#1B3D6D")
         self.canvas.create_text(200, 20, fill="white", font="Helvetica 20 bold italic", text=date.today().strftime("%A, %B %d %Y"))
+
 
     def draw_Food(self):
         self.clear_view()
