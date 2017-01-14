@@ -25,7 +25,7 @@ class GUI:
 
         self.__content_canvas = tk.Canvas(master = self.__top, width=self.__DISPLAY_WIDTH, height=self.__DISPLAY_HEIGHT-self.__DIMMENSIONS["navigation"][1])
         self.__content_canvas.grid(row = 0, column = 0, sticky = tk.N + tk.S + tk.W + tk.E)
-        # self.__content_canvas.bind('<Configure>', self.Radio_Button)
+        self.__content_canvas.bind('<Configure>', self.draw_content)
 
         self.__nav_canvas = tk.Canvas(master = self.__top, width=self.__DISPLAY_WIDTH, height=self.__DIMMENSIONS["navigation"][1], cursor='hand2')
         self.__nav_canvas.grid(row = 1, column = 0, sticky = tk.N + tk.S + tk.W + tk.E)
@@ -98,5 +98,4 @@ if __name__ == '__main__':
     print("FILE TESTING")
     win = GUI()
     win.run()
-    input("Enter to Quit")
     exit()
