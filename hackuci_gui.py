@@ -60,7 +60,14 @@ class GUI:
         for i in range(5):
             x0 = i * self.__DIMMENSIONS["navigation"][0]
             y0 = 0
-            self.__buttons.append(self.__nav_canvas.create_rectangle(x0, y0, x0 + self.__DIMMENSIONS["navigation"][0], y0 + self.__DIMMENSIONS["navigation"][1], fill=(self.__PRIMARY_COLOR if i+1 != self.__current_button else self.__SECONDARY_COLOR)))
+            if i+1 == self.__current_button:
+                self.uci_logo = tk.PhotoImage(file="icons/uci_logo.gif")
+                self.__buttons.append(self.__nav_canvas.create_image(x0 - 39 + self.__DIMMENSIONS["navigation"][0], y0 - 38 + self.__DIMMENSIONS["navigation"][1], image=self.uci_logo))
+            else:
+                self.__buttons.append(self.__nav_canvas.create_rectangle(x0, y0, x0 + self.__DIMMENSIONS["navigation"][0], y0 + self.__DIMMENSIONS["navigation"][1], fill=(self.__PRIMARY_COLOR if i+1 != self.__current_button else self.__SECONDARY_COLOR)))
+            
+                
+
 
     def draw_content(self, event):
         self.clear_canvas(self.__content_canvas)
@@ -85,16 +92,24 @@ class GUI:
         self.__content_canvas.create_text(200, 20, fill="white", font="Helvetica 20 bold italic", text=date.today().strftime("%A, %B %d %Y"))
 
     def __draw_food(self):
-        pass
+        self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
+
+        self.__content_canvas.create_text(200, 20, fill="white", font="Helvetica 20 bold italic", text="FOOD")
 
     def __draw_maps(self):
-        pass
+        self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
+
+        self.__content_canvas.create_text(200, 20, fill="white", font="Helvetica 20 bold italic", text="MAPS")
 
     def __draw_webReg(self):
-        pass
+        self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
+
+        self.__content_canvas.create_text(200, 20, fill="white", font="Helvetica 20 bold italic", text="WEBREG")
 
     def __draw_events(self):
-        pass
+        self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
+
+        self.__content_canvas.create_text(200, 20, fill="white", font="Helvetica 20 bold italic", text="EVENTS")
 
 if __name__ == '__main__':
     print("FILE TESTING")
