@@ -77,14 +77,17 @@ class GUI:
         self.ant_breakFast = {}
         self.ant_lunch = {}
         self.ant_dinner = {}
-        self.__food_tab = 0
+        self.__FOOD_PERIOD = 0
         self.__meal_buttons = []
 
         self.__entry_fields = ["Dept", "CourseNum"]
         self.__entry_vars = []
-        for field in self.__entry_fields:
+        for i, field in enumerate(self.__entry_fields):
             var = tk.StringVar()
-            var.set("")
+            if(i == 0):
+                var.set("COMP SCI")
+            else:
+                var.set("")
             self.__entry_vars.append(var)
         self.__entry_vars[0].set("I&C SCI")
         self.__classDataManager = None
@@ -152,8 +155,8 @@ class GUI:
 
     def __fetch_class_data(self):
         for i in range(len(self.__entry_vars)):
+            print(str(i) + " / " + str(len(self.__entry_vars)))
             self.__classDataManager.update_data(self.__entry_fields[i], self.__entry_vars[i].get())
-
         self.__classDataManager.set_html_target()
         self.__classDataManager.process_available_data()
         self.__classDataManager.process_result()
@@ -328,7 +331,7 @@ class GUI:
         for i, meal in enumerate(meal_labels):
             back_color = self.__PRIMARY_COLOR
             font_color = self.__SECONDARY_COLOR
-            if(i == self.__food_tab):
+            if(i == self.__FOOD_PERIOD):
                 font_color = self.__PRIMARY_COLOR
                 back_color = self.__SECONDARY_COLOR
 
@@ -345,7 +348,7 @@ class GUI:
                 self.__course_buttons.append(self.draw_textblock(self.__content_canvas, course, 0, i * self.__DIMMENSIONS["class"][1] + i* self.__tile_margins, self.__DIMMENSIONS["class"][0], self.__DIMMENSIONS["class"][1], scrollable=True))
 
     def __draw_webReg(self):
-        counter = len(self.__entry_vars)
+        counter = len(self.__entry_vars) + 1
 
         if(self.__classData != None):
             for course in self.__classData:
@@ -360,11 +363,10 @@ class GUI:
                 back_color = self.__SECONDARY_COLOR
 
             self.draw_textblock(self.__content_canvas, self.__entry_fields[i], 0, i * self.__DIMMENSIONS["event"][1], self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], bg_color=back_color, text_color = font_color, modifier="bold")
-            if(i % 2 != 1):
-                optionList = ('COMPSCI', 'EECS', 'CSE', 'I&C SCI', 'IN4MATX')
-                self.v = tk.StringVar()
-                self.v.set(optionList[0])
-                om = tk.OptionMenu(self.__content_canvas, self.v, *optionList)
+            if(i == 0):
+                optionList = ['COMPSCI', 'EECS', 'CSE', 'I&C SCI', 'IN4MATX']
+
+                om = tk.OptionMenu(self.__content_canvas, self.__entry_vars[0], *optionList)
                 self.__content_canvas.create_window(self.__content_canvas.winfo_width()*7/10, (i + .5) * self.__DIMMENSIONS["event"][1], window = om)
             else:
                 e = tk.Entry(self.__content_canvas, textvariable=var, width=25)
@@ -399,7 +401,7 @@ class GUI:
             if(self.__current_button == 2):
                 for i, meal in enumerate(self.__meal_buttons):
                     if(meal in [closest[0], under[0]]):
-                        self.__food_tab = i
+                        self.__FOOD_PERIOD = i
                         self.redraw()
             elif(self.__current_button == 3):
                 for i, course in enumerate(self.__course_buttons):
@@ -437,7 +439,7 @@ class GUI:
             if(button_num == 1):
                 self.fetch_new_map()
             elif(button_num == 2):
-                self.__food_tab = 0
+                self.__FOOD_PERIOD = 0
             self.__current_button = button_num
 
         self.redraw()

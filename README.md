@@ -11,8 +11,9 @@ This file primarily describes the UCI_DATA_API; a simple API specifically design
 
 ## Table of Contents
 
-1. [Roadmap](#roadmap)
-2. [TODOs](#todos)
+1. [Highlights](#highlights)
+2. [Roadmap](#roadmap)
+3. [TODOs](#todos)
 
 1. [App Usage](#usage-app)
 2. [API Usage](#usage-api)
@@ -20,6 +21,27 @@ This file primarily describes the UCI_DATA_API; a simple API specifically design
 4. [Examples]($eamples)
 4. [Requirements](#requirements)
 5. [Development](#develompent)
+
+## Highlights
+Coming soon...
+
+## ROADMAP
+ Firstly, various visual improvements could and should be implemented. Particularly on the food tab.
+
+ In the future, we plan on integrating a social walking service to track anteater walking patterns at UCI. Using the resulting data, we can create more efficient walking routes.
+
+ We also plan on parsing food nutritional data more carefully, vs the current "sweeping" tactic for basic information. We will, of course, make this information easily accessible.
+
+ Furthermore, we plan to integrate the events tab with UCI's EEE calander for pulling courses.
+
+ Lastly, we plan on using a basic machine learning algorithm to provide users with UCI news that is considered potentially interesting to them based on events they attend, courses they take, and places they frequent.
+
+ In terms of the API, we plan on increasing it's robustness and providing XML output by request. Additionally, optimizations to the searching algorithms for the ```HTMLReferenceTree``` class should be implemented.
+
+## TODOs
+
+1. Write a better self test for UCI_DATA_API
+2. Something with events page? Ability to add events at least?
 
 ## Installation
 Simply import the ```UCI_DATA_API.py``` module into the module you intend to use the API.
@@ -84,21 +106,3 @@ In addition to these basic examples, running ```OneHack_HTML_Parser.py``` or ```
  The lightweight, HTML parser is built on python's basic html parser, yet provides additional functions and details for quickly locating and iterating through data. In particular, it provides an internal array of HTML id attributes, for rapid searching by ID. The search by attributes, however, expects more than one answer and thus, must do a thorough, linear search through all data nodes.
 
  Additionally, the ```HTMLReferenceTree``` class works primarily with HTMLNodes, a simple implementation of a node for quick access of children and parents. HTMLNodes are also equipped with basic comparision operators for sorting purposes.
-
-## ROADMAP
- Firstly, various visual improvements could and should be implemented. Particularly on the food tab.
- 
- In the future, we plan on integrating a social walking service to track anteater walking patterns at UCI. Using the resulting data, we can create more efficient walking routes.
-
- We also plan on parsing food nutritional data more carefully, vs the current "sweeping" tactic for basic information. We will, of course, make this information easily accessible.
-
- Furthermore, we plan to integrate the events tab with UCI's EEE calander for pulling courses.
-
- Lastly, we plan on using a basic machine learning algorithm to provide users with UCI news that is considered potentially interesting to them based on events they attend, courses they take, and places they frequent.
-
- In terms of the API, we plan on increasing it's robustness and providing XML output by request. Additionally, optimizations to the searching algorithms for the ```HTMLReferenceTree``` class should be implemented.
-
-## TODOs
-
-1. Write a better self test for UCI_DATA_API
-2. Something with events page? Ability to add events at least?
