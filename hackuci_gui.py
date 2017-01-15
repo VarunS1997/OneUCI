@@ -68,9 +68,14 @@ class GUI:
         self.__nav_canvas.bind('<Button-1>', self.handle_radio)
         self.__nav_canvas.bind('<Configure>', self.draw_menu)
 
-        self.pip = {}
-        self.brand = {}
-        self.ant = {}
+        self.pip_breakfast = {}
+        self.pip_lunch = {}
+        slef.pip_dinner = {}
+        self.brand_lunch = {}
+        self.brand_dinner = {}
+        self.ant_breakFast = {}
+        self.ant_lunch = {}
+        self.ant_dinner = {}
 
         self.__entry_fields = ["Dept", "CourseNum"]
         self.__entry_vars = []
@@ -98,17 +103,22 @@ class GUI:
         food1.get_pippins_food()
         food1.process_available_data()
         food1.process_result()
-        self.pip = food1.get_result()
+        self.pip_breakfast = food1.get_result('breakfast')
+        self.pip_lunch = food1.get_result('lunch')
+        self.pip_dinner = food1.get_result('dinner')
 
         food2.get_anteatery_food()
         food2.process_available_data()
         food2.process_result()
-        self.ant = food2.get_result()
+        self.ant_breakfast = food2.get_result('breakfast')
+        self.ant_lunch = food2.get_result('lunch')
+        self.ant_dinner = food2.get_result('dinner')
 
         food3.get_brandy_food()
         food3.process_available_data()
         food3.process_result()
-        self.brand = food3.get_result()
+        self.brand_lunch = food3.get_result('lunch')
+        self.brand_dinner = food3.get_result('dinner')
 
         self.__classDataManager = ClassDataManager()
 
