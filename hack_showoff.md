@@ -18,7 +18,7 @@
 
 ## Planner
 1. Cycle through days by clicking the planner tab again
-1. Click on a class to show a map to class
+1. Click on a MWF class to show a map to class
 1. Reset the map by clicking the map icon
 
 ## Web Reg
