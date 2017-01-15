@@ -53,7 +53,7 @@ courseManager = ClassDataManager()
 courseManager.set_html_target()
 courseManager.process_available_data()
 courseManager.process_result()
-print(courseManager.getJSON())
+courseManager.getJSON()
 
 foodManager = FoodDataManager()
 foodManager.get_pippins_food()
@@ -82,3 +82,4 @@ In addition to these basic examples, running ```OneHack_HTML_Parser.py``` or ```
 
 1. Sort and Display Food data based on time of day
 2. Make webreg form fields scrollable
+3. Write a better self test for UCI_DATA_API
