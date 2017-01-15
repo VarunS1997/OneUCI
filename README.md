@@ -74,7 +74,7 @@ In addition to these basic examples, running ```OneHack_HTML_Parser.py``` or ```
 ## Requirements
 
 - Python 3.3 or greater
-> Requirements text here
+
 
 ## Development
  Created as a part of the HACK UCI Hackathon

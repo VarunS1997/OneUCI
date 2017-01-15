@@ -360,10 +360,15 @@ class GUI:
                 back_color = self.__SECONDARY_COLOR
 
             self.draw_textblock(self.__content_canvas, self.__entry_fields[i], 0, i * self.__DIMMENSIONS["event"][1], self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], bg_color=back_color, text_color = font_color, modifier="bold")
-
-            e = tk.Entry(self.__content_canvas, textvariable=var, width=25)
-
-            self.__content_canvas.create_window(self.__content_canvas.winfo_width()*7/10, (i + .5) * self.__DIMMENSIONS["event"][1], window = e)
+            if(i % 2 != 1):
+                optionList = ('COMPSCI', 'EECS', 'CSE', 'I&C SCI', 'IN4MATX')
+                self.v = tk.StringVar()
+                self.v.set(optionList[0])
+                om = tk.OptionMenu(self.__content_canvas, self.v, *optionList)
+                self.__content_canvas.create_window(self.__content_canvas.winfo_width()*7/10, (i + .5) * self.__DIMMENSIONS["event"][1], window = om)
+            else:
+                e = tk.Entry(self.__content_canvas, textvariable=var, width=25)
+                self.__content_canvas.create_window(self.__content_canvas.winfo_width()*7/10, (i + .5) * self.__DIMMENSIONS["event"][1], window = e)
 
             self.__content_canvas.update()
 
