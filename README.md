@@ -7,8 +7,8 @@ This file primarily describes the UCI_DATA_API; a simple API specifically design
 1. [TODOs](#todos)
 
 1. [App Usage](#usage)
-2. [API Usage](#usage (api))
-3. [Parser Usage](#usage (Parser))
+2. [API Usage](#usage(api))
+3. [Parser Usage](#usage(parser))
 4. [Requirements](#requirements)
 5. [Development](#develompent)
 
@@ -17,10 +17,10 @@ Simply import the UCI_DATA_API.py module into the module you intend to use the A
 
 For lightweight, HTML parsing, implement the OneHack_HTML_Parser.py module.
 
-## Usage (APP)
+## Usage(APP)
 Simply run the main.py module.
 
-## Usage (API)
+## Usage(API)
 To use the module, start by creating either a FoodDataManager or ClassDataManager class.
 
 Each of these classes supports the same standard sequence of events:
@@ -34,7 +34,7 @@ or as a python dictionary though UCI_DATA_API.get_result().
 
 Tests can also be preformed by running the UCI_DATA_API.py file.
 
-## Usage (Parser)
+## Usage(Parser)
  After construction, one of the following functions must be called and bound to the parser:
     - get_HTML_from_url
     - get_HTML_from_string
