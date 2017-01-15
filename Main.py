@@ -5,25 +5,37 @@ from hackuci_gui import *
 
 gui = GUI()
 #classData = ClassDataManager()
-food = FoodDataManager()
+food1 = FoodDataManager()
+food2 = FoodDataManager()
+food3= FoodDataManager()
 
 
 
-pippin = food.get_pippins_food()
-food.process_available_data()
-food.process_result()
-pipFood = food.getJSON()
-pipKeys = json.loads(pipFood).keys()
-gui.retrieve_food(json.loads(pipFood))
+food1.get_pippins_food()
+food1.process_available_data()
+food1.process_result()
+pip = json.loads(food1.getJSON())
+
+food2.get_anteatery_food()
+food2.process_available_data()
+food2.process_result()
+ant = json.loads(food2.getJSON())
+
+food3.get_brandy_food()
+food3.process_available_data()
+food3.process_result()
+brand = json.loads(food3.getJSON())
+
+gui.retrieve_food(pip, brand, ant)
 
 
     
     
 
 
-print(json.loads(pipFood).keys())
-ant = food.get_anteatery_food()
-brandy = food.get_brandy_food()
+
+
+
 
 
     

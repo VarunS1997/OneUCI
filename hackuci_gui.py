@@ -141,8 +141,10 @@ class GUI:
     def __set_scroll_last(self, event):
         self.yscroll_last = event.y
         
-    def retrieve_food(self, food):
-        self.pip = food
+    def retrieve_food(self, pip, brand, ant):
+        self.pip = pip
+        self.brand = brand
+        self.ant = ant
         
 
     def __draw_food(self):
