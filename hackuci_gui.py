@@ -48,6 +48,9 @@ class GUI:
         self.__nav_canvas.grid(row = 1, column = 0, sticky = tk.N + tk.S + tk.W + tk.E)
         self.__nav_canvas.bind('<Button-1>', self.handle_radio)
         self.__nav_canvas.bind('<Configure>', self.draw_menu)
+        self.pip = {}
+        self.brand = {}
+        self.ant = {}
 
     def run(self):
         self.__top.mainloop()
@@ -107,6 +110,12 @@ class GUI:
         block = self.__content_canvas.create_rectangle(0, ycoord, 400, ycoord + 30, fill="red", tags="scrollable")
         text = self.__content_canvas.create_text(200, ycoord + 20, text=time1 + "-" + time2 + " : " + place, tags="scrollable")
         self.block_counter += 1
+    def draw_food_block(self, food, desc):
+        #check for space to draw the box
+        ycoord = 50 + (self.block_counter * 50)
+        #block = self.__content_canvas.create_rectangle(0, ycoord, 400, ycoord + 30, fill=self.__PRIMARY_COLOR, tags="scrollable")
+        text = self.__content_canvas.create_text(200, ycoord + 20,fill="blue", text=food + ': ' + desc, tags="scrollable")
+        self.block_counter += 1
 
     def __set_origin(self, event):
         self.__xorigin, self.__yorigin = event.x, event.y
@@ -131,11 +140,22 @@ class GUI:
         
     def __set_scroll_last(self, event):
         self.yscroll_last = event.y
+        
+    def retrieve_food(self, food):
+        self.pip = food
+        
 
     def __draw_food(self):
+        self.block_counter = 0
         self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
 
         self.__content_canvas.create_text(200, 20, fill="white", font="Helvetica 20 bold italic", text="FOOD")
+
+        for i in self.pip.keys():
+            self.draw_food_block(i, self.pip[i])
+            self.block_counter += 0
+
+        self.__content_canvas.tag_lower("scrollable")
 
     def __draw_maps(self):
         self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
