@@ -12,23 +12,23 @@ def main():
     food1.get_pippins_food()
     food1.process_available_data()
     food1.process_result()
-    pip = json.loads(food1.getJSON())
+    pip = food1.get_result()
 
     food2.get_anteatery_food()
     food2.process_available_data()
     food2.process_result()
-    ant = json.loads(food2.getJSON())
+    ant = food2.get_result()
 
     food3.get_brandy_food()
     food3.process_available_data()
     food3.process_result()
-    brand = json.loads(food3.getJSON())
+    brand = food3.get_result()
 
     courseManager = ClassDataManager()
     courseManager.set_html_target()
     courseManager.process_available_data()
     courseManager.process_result()
-    classData = courseManager.getJSON()
+    classData = classData.get_result()
 
     gui.retrieve_food(pip, brand, ant)
     gui.run()

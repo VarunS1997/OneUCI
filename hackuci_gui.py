@@ -1,11 +1,13 @@
 import tkinter as tk
-#from debugging import *
+from UDA_debugging import *
 from datetime import date
 
 def get_dimmensions():
     dimmensions = {}
     dimmensions["navigation"] = (80, 80)
     dimmensions["banner"] = (400, 40)
+    dimmensions["food"] = (400, 120)
+    dimmensions["class"] = (400, 60)
     return dimmensions
 
 class GUI:
@@ -23,7 +25,7 @@ class GUI:
         self.__current_button = 3
         self.__xorigin = 0
         self.__yorigin = 0
-
+        self.__tile_margins = 10
         self.__FOOD_COUNT = 0
         self.__DAY_COUNT = 0
 
@@ -62,6 +64,8 @@ class GUI:
         self.brand = {}
         self.ant = {}
 
+        self.days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY']
+
     def run(self):
         self.__top.mainloop()
 
@@ -90,16 +94,28 @@ class GUI:
 
         self.__title_canvas.create_rectangle(0, 0, canvas_width, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
 
+        title = ""
+        subtitle = ""
+
         if self.__current_button == 1:
-
+            title = "MAPS"
+            subtitle = "No Route"
         elif self.__current_button == 2:
-
+            title = "FOOD"
+            subtitle = ["PIPPINS", "BRANDYWINE", "THE ANTEATERY"][self.__FOOD_COUNT]
         elif self.__current_button == 3:
-            self.__title_canvas.create_text(canvas_width/2, 20, fill=self.__SECONDARY_COLOR, font="Courier 16 bold", text=date.today().strftime("%A, %B %d %Y"))
+            title = date.today().strftime("%A, %B %d %Y")
+            subtitle = self.days[self.__DAY_COUNT]
         elif self.__current_button == 4:
-
+            title = "WEB REG"
+            subtitle = "LISTING"
         elif self.__current_button == 5:
+            title = "EVENTS"
+            subtitle = "LISTING"
 
+        self.draw_textblock(self.__title_canvas, title, 0, 0, canvas_width, self.__DIMMENSIONS["banner"][1], font_size=16, modifier="bold", center=True, bg_color=self.__PRIMARY_COLOR, text_color=self.__SECONDARY_COLOR)
+
+        self.draw_textblock(self.__title_canvas, subtitle, 0, self.__DIMMENSIONS["banner"][1], canvas_width, self.__DIMMENSIONS["banner"][1], font_size=16, modifier="bold", center=True)
 
     def draw_menu(self, event):
         self.clear_canvas(self.__nav_canvas)
@@ -135,16 +151,25 @@ class GUI:
     #
     # DRAWING UTILITY
     #
-    def draw_textblock(self, x0, y0, width, height, bg_color = self.__SECONDARY_COLOR, text_color = self.__PRIMARY_COLOR, font_size = 12, scrollable = False):
-        padding = 10
+    def draw_textblock(self, canvas, in_text, x0, y0, max_width, max_height, bg_color = None, text_color = None, font_size = 12, scrollable = False, padding = 10, modifier=None, center=False):
+        if(bg_color == None):
+            bg_color = self.__SECONDARY_COLOR
 
-        self.__content_canvas.create_rectangle(x0, y0, x0 + height, y0 + height, fill=bg_color, tags=("scrollable" if scrollable else ""))
+        if(text_color == None):
+            text_color = self.__PRIMARY_COLOR
 
-        self.__content_canvas.create_text(x0 + padding, y0 + padding, x0 + height, y0 + height, fill=bg_color, tags=("scrollable" if scrollable else ""), width=)
-
-        text = self.__content_canvas.create_text(x0 + paddin, ycoord + 20,fill="blue", font='Courier 11 bold', text=food + ':\n', tags="scrollable", anchor='w')
-
-        text = self.__content_canvas.create_text(10, ycoord + 35,fill="blue", font='Courier 11 bold', text=desc[:wrapping_length] + '\n' + desc[wrapping_length:], tags="scrollable", anchor='w')
+        if(scrollable):
+            canvas.create_rectangle(x0, y0, x0 + max_width, y0 + max_height, fill=bg_color, tags="scrollable")
+            if(center):
+                canvas.create_text(x0 + max_width/2, y0 + max_height/2, fill=text_color, tags="scrollable", width=max_width, text=in_text, font="Courier " + str(font_size) + " " + str(modifier or ""))
+            else:
+                canvas.create_text(x0 + padding, y0 + padding, fill=text_color, anchor="nw", tags="scrollable", width=max_width, text=in_text, font="Courier " + str(font_size) + " " + str(modifier or ""))
+        else:
+            canvas.create_rectangle(x0, y0, x0 + max_width, y0 + max_height, fill=bg_color)
+            if(center):
+                canvas.create_text(x0 + max_width/2, y0 + max_height/2, fill=text_color, width=max_width, text=in_text, font="Courier " + str(font_size) + " " + str(modifier or ""))
+            else:
+                canvas.create_text(x0 + padding, y0 + padding, fill=text_color, anchor="nw", width=max_width, text=in_text, font="Courier " + str(font_size) + " " + str(modifier or ""))
 
     def draw_block(self, class_name, time1, time2,  place):
         #check for space to draw the box
@@ -153,107 +178,41 @@ class GUI:
         text = self.__content_canvas.create_text(200, ycoord + 20,fill="blue", font='Courier 16 bold', text=class_name + ': ' + time1 + "-" + time2 + " @ " + place, tags="scrollable")
 
         self.block_counter += 1
-    def draw_food_block(self, food, desc):
-        #check for space to draw the box
-        wrapping_length = 40
-        block_height = 50
-
-        ycoord = self.block_counter * block_height
-
-        block = self.__content_canvas.create_rectangle(0, ycoord, self.__DISPLAY_WIDTH, ycoord + block_height, fill=self.__SECONDARY_COLOR, tags="scrollable")
-
-        text = self.__content_canvas.create_text(10, ycoord + 20,fill="blue", font='Courier 11 bold', text=food + ':\n', tags="scrollable", anchor='w')
-        text = self.__content_canvas.create_text(10, ycoord + 35,fill="blue", font='Courier 11 bold', text=desc[:wrapping_length] + '\n' + desc[wrapping_length:], tags="scrollable", anchor='w')
-
-        self.block_counter += 1
 
     #
     # DRAWING MACROS
     #
     def __draw_maps(self):
-        self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
-
-        self.__content_canvas.create_text(200, 20, fill=self.__SECONDARY_COLOR, font="Courier 20 bold", text="MAPS")
-
         self.__content_canvas.create_image(200, 300, image=self.icons[10])
 
     def __draw_food(self):
-        self.block_counter = 0
-        self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
+        food_dict = {}
+        if(self.__FOOD_COUNT == 0):
+            food_dict = self.pip
+        elif(self.__FOOD_COUNT == 1):
+            food_dict = self.brand
+        elif(self.__FOOD_COUNT == 2):
+            food_dict = self.ant
 
-        self.__content_canvas.create_text(200, 20, fill=self.__SECONDARY_COLOR, font="Courier 20 bold", text="FOOD")
+        for i, food in enumerate(food_dict.keys()):
+            string = food + "\n" + food_dict[food]
 
-        self.__content_canvas.create_rectangle(0, 80, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__SECONDARY_COLOR)
-        if self.__FOOD_COUNT == 0:
-            self.__content_canvas.create_text(200, 60, fill=self.__PRIMARY_COLOR, font="Courier 20 bold", text="PIPPINS")
-
-            if self.pip:
-                for i in self.pip.keys():
-                    self.draw_food_block(i, self.pip[i])
-            else:
-                self.__content_canvas.create_text(200, 200, fill=self.__PRIMARY_COLOR, font="Courier 20 bold", text="CLOSED AF")
-
-
-            self.__FOOD_COUNT += 1
-
-        elif self.__FOOD_COUNT == 1:
-            self.__content_canvas.create_text(200, 60, fill=self.__PRIMARY_COLOR, font="Courier 20 bold", text="BRANDY WINE")
-
-            if self.brand:
-                for i in self.brand.keys():
-                    self.draw_food_block(i, self.brand[i])
-            else:
-                self.__content_canvas.create_text(200, 200, fill=self.__PRIMARY_COLOR, font="Courier 20 bold", text="CLOSED AF")
-
-            self.__FOOD_COUNT += 1
-
-        elif self.__FOOD_COUNT == 2:
-            self.__content_canvas.create_text(200, 60, fill=self.__PRIMARY_COLOR, font="Courier 20 bold", text="ANTEATERY")
-
-            if self.ant:
-                for i in self.ant.keys():
-                    self.draw_food_block(i, self.ant[i])
-            else:
-                self.__content_canvas.create_text(200, 200, fill=self.__PRIMARY_COLOR, font="Courier 20 bold", text="CLOSED AF")
-
-
-            self.__FOOD_COUNT = 0
-
+            self.draw_textblock(self.__content_canvas, string, 0, i * self.__DIMMENSIONS["food"][1] + i* self.__tile_margins, self.__DIMMENSIONS["food"][0], self.__DIMMENSIONS["food"][1], scrollable=True)
+            
         self.__content_canvas.tag_lower("scrollable")
 
     def __draw_planner(self):
-        self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
-
-        self.__content_canvas.create_text(200, 20, fill=self.__SECONDARY_COLOR, font="Courier 20 bold", text=date.today().strftime("%A, %B %d %Y"))
-
-        self.block_counter = 0
-
-        self.days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY']
-
-        self.__content_canvas.create_rectangle(0, 80, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__SECONDARY_COLOR)
-        self.__content_canvas.create_text(200, 60, fill=self.__PRIMARY_COLOR, font="Courier 20 bold", text=self.days[self.__DAY_COUNT])
-        #example boxes
-        if self.__DAY_COUNT == 1 or self.__DAY_COUNT == 3:
-            self.draw_block('CS 122B',"11:00", "12:20", "HSLH 100A")
-            self.draw_block('CS 162',"12:30", "1:50", "ICS 174")
-            self.draw_block('GEN&SEX 40B',"2:00", "3:20", "ELH 100")
-            self.draw_block('CS 167',"3:30", "4:50", "HH 178")
-
-        self.__DAY_COUNT += 1
-        self.__DAY_COUNT = self.__DAY_COUNT % 5
-
-        self.__content_canvas.tag_lower("scrollable")
+        if(self.__DAY_COUNT == 1 or self.__DAY_COUNT == 3):
+            classes = ["CS 122B: 11:00-12:20 @ HSLH 100A", "CS 162: 12:30-1:50 @ ICS 174", "GEN&SEX 40B: 2:00-3:20 @ ELH 100", "CS 167: 3:30-4:50 @ HH 178"]
+            for i, string in enumerate(classes):
+                self.draw_textblock(self.__content_canvas, string, 0, i * self.__DIMMENSIONS["class"][1] + i* self.__tile_margins, self.__DIMMENSIONS["class"][0], self.__DIMMENSIONS["class"][1], scrollable=True)
 
     def __draw_webReg(self):
-        self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
+        self.__content_canvas.create_text(200, 200, fill='blue', font="Courier 20 bold", text="HACK UCI ALL DAY EVERY DAY")
 
-        self.__content_canvas.create_text(200, 20, fill=self.__SECONDARY_COLOR, font="Courier 20 bold", text="WEBREG")
+        self.__content_canvas.create_text(200, 240, fill='blue', font="Courier 20 bold", text="122B PROJECT 1 DUE WED 11:55PM")
 
     def __draw_events(self):
-        self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
-
-        self.__content_canvas.create_text(200, 20, fill=self.__SECONDARY_COLOR, font="Courier 20 bold", text="EVENTS")
-
         self.__content_canvas.create_text(200, 200, fill='blue', font="Courier 20 bold", text="HACK UCI ALL DAY EVERY DAY")
 
         self.__content_canvas.create_text(200, 240, fill='blue', font="Courier 20 bold", text="122B PROJECT 1 DUE WED 11:55PM")
@@ -266,8 +225,16 @@ class GUI:
 
     def handle_radio(self, event):
         button_num = (event.x // self.__DIMMENSIONS["navigation"][0]) + 1
-        #debug_print("Clicked at ({0},{1}) => # {2})".format(event.x, event.y, button_num))
-        self.__current_button = button_num
+        debug_print("Clicked at ({0},{1}) => # {2})".format(event.x, event.y, button_num))
+
+        if(button_num == self.__current_button):
+            if(button_num == 2):
+                self.__FOOD_COUNT += 1
+            elif(button_num == 3):
+                self.__DAY_COUNT += 1
+        else:
+            self.__current_button = button_num
+
         self.redraw()
 
     def __scroll_scrollables(self, event):

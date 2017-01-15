@@ -34,7 +34,7 @@ class UCI_DATA_BASE:
     def getJSON(self) -> str:
         return json.dumps(self._processed_data)
 
-    def get_result():
+    def get_result(self):
         return self._processed_data
 
     def set_html_target(self, path:str) -> None:
@@ -95,7 +95,6 @@ class ClassDataManager(UCI_DATA_BASE):
             rowNum += 1
 
         self._processed_data = result
-        print(result)
 
     def reset(self) -> None:
         self._make_default_form_data()
