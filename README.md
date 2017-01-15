@@ -91,3 +91,4 @@ In addition to these basic examples, running ```OneHack_HTML_Parser.py``` or ```
 2. Make webreg form fields scrollable
 3. Write a better self test for UCI_DATA_API
 4. Double check names at the top of this file and add people to the devpost
+5. Something with events page? Ability to add events at least?
