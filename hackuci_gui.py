@@ -1,4 +1,6 @@
 import tkinter as tk
+import webbrowser
+
 from UDA_debugging import *
 from UCI_DATA_API import *
 from datetime import date
@@ -95,8 +97,10 @@ class GUI:
 
         self.__MWFclasses = ["CS 122B (LEC): 11:00-12:20 @ HSLH 100A", "CS 162 (LEC): 12:30-1:50 @ ICS 174", "GEN&SEX 50B (LEC): 2:00-3:20 @ ELH 100", "CS 167 (LEC): 3:30-4:50 @ HH 178"]
         self.__TTclasses = ["GEN&SEX 50B (DIS): 3:00-3:50 @ STT 238", "CS 162 (DIS): 4:00-4:50 @ DBH 1600"]
-        self.__events = ["HACK UCI ALL DAY EVERY DAY", "122B PROJECT 1 DUE WED 11:55PM"]
         self.__classData = {}
+
+        self.__events = ["HACK UCI ALL DAY EVERY DAY", "122B PROJECT 1 DUE WED 11:55PM"]
+        self.__event_button = None
 
         self.__days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY']
 
@@ -385,7 +389,10 @@ class GUI:
 
     def __draw_events(self):
         for i, string in enumerate(self.__events):
-            self.draw_textblock(self.__content_canvas, string, 0, i * self.__DIMMENSIONS["event"][1] + i* self.__tile_margins, self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], scrollable=True)
+            if i == 0:
+                self.__event_button = self.draw_textblock(self.__content_canvas, string, 0, i * self.__DIMMENSIONS["event"][1] + i* self.__tile_margins, self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], scrollable=True)
+            else:
+                self.draw_textblock(self.__content_canvas, string, 0, i * self.__DIMMENSIONS["event"][1] + i* self.__tile_margins, self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], scrollable=True)
 
     #
     # EVENT HANDLERS
@@ -393,7 +400,7 @@ class GUI:
     def __content_click(self, event):
         self.__set_origin(event)
 
-        if(self.__current_button in [2, 3, 4]):
+        if(self.__current_button in [2, 3, 4, 5]):
             closest = event.widget.find_overlapping(event.x, event.y, event.x+1, event.y+1)
             under = event.widget.find_below(closest)
             if(len(closest) == 0):
@@ -419,6 +426,11 @@ class GUI:
                 if(self.__submit_button in [closest[0], under[0]]):
                     self.__fetch_class_data()
                     self.redraw()
+            elif(self.__current_button == 5):
+                url = "http://live.hackuci.com/"
+                newtab = 2
+
+                webbrowser.open(url, new=newtab)
 
     def __set_origin(self, event):
         self.__xorigin, self.__yorigin = event.x, event.y
