@@ -4,7 +4,7 @@ from OneHack_HTML_Parser import NodeType
 from urllib.parse import urlparse
 import json
 
-UCI_URLs = {"webreg" : "https://www.reg.uci.edu/perl/WebSoc/", "brandy" : "https://uci.campusdish.com/Commerce/Catalog/Menus.aspx?LocationId=3078", "pippins" : "https://uci.campusdish.com/Commerce/Catalog/Menus.aspx?LocationId=4832", "anteater" : "https://uci.campusdish.com/Commerce/Catalog/Menus.aspx?LocationId=3056" }
+UCI_URLs = {"webreg" : "https://www.reg.uci.edu/perl/WebSoc/", "brandy" : "https://uci.campusdish.com/Commerce/Catalog/Menus.aspx?LocationId=3078", "pippins" : "https://uci.campusdish.com/Commerce/Catalog/Menus.aspx?LocationId=4832&PeriodId={0}&MenuDate=&Mode=day&UIBuildDateFrom=", "anteater" : "https://uci.campusdish.com/Commerce/Catalog/Menus.aspx?LocationId=3056&PeriodId={0}&MenuDate=&Mode=day&UIBuildDateFrom=" }
 
 class RetrievalFailure(Exception):
     """ Indicates a failure to get html data  from a source"""
@@ -145,17 +145,23 @@ class FoodDataManager(UCI_DATA_BASE):
         self._processed_data = result
 
 
-    def get_pippins_food(self):
-        return self.__get_food_items(UCI_URLs["pippins"])
+    def get_pippins_food(self, timeDay="breakfast"):
+        reset()
+        timeIds = {"breakfast": "49", "lunch": "106", "dinner": "107"}
 
-    def get_anteatery_food(self):
-        return self.__get_food_items(UCI_URLs["anteater"])
+        return self.__get_food_items(UCI_URLs["pippins"].format(timeIds[timeDay]))
 
-    def get_brandy_food(self):
-        return self.__get_food_items(UCI_URLs["brandy"])
+    def get_brandy_food(self, timeDay="breakfast"):
+        reset()
+        timeIds = {"breakfast": "49", "lunch": "106", "dinner": "107"}
 
-    def __get_food_items(self, url):
-        self.set_html_target(url)
+        return self.__get_food_items(UCI_URLs["brandy"].format(timeIds[timeDay]))
+
+    def get_anteatery_food(self, timeDay="breakfast"):
+        reset()
+        timeIds = {"breakfast": "49", "lunch": "106", "dinner": "107"}
+
+        return self.__get_food_items(UCI_URLs["anteater"].format(timeIds[timeDay]))
 
 if __name__ == '__main__':
     if(input("Test [CLASSES/FOOD]? ").lower() == "classes"):
