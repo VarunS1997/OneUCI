@@ -345,7 +345,7 @@ class GUI:
                 self.fetch_new_map()
             elif(button_num == 2):
                 self.__FOOD_COUNT += 1
-                if(self.__FOOD_COUNT > 3):
+                if(self.__FOOD_COUNT >= 3):
                     self.__FOOD_COUNT = 0
             elif(button_num == 3):
                 self.__DAY_COUNT += 1

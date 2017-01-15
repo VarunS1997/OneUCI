@@ -105,7 +105,7 @@ class ClassDataManager(UCI_DATA_BASE):
 
     def update_data(self, key: str, value: str):
         if(key in self._form_data):
-            self._form_data["key"] = value
+            self._form_data[key] = value
 
     def set_html_target(self, path=None):
         if(path):

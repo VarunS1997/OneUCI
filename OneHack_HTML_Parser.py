@@ -389,7 +389,7 @@ if __name__ == '__main__':
     if(urlFormat):
         testTree.get_HTML_from_url(destination)
     else:
-        testTree.get_HTML_from_file("testFiles/" + destination)
+        testTree.get_HTML_from_file(destination)
 
     testTree.parse_data()
 
