@@ -1,0 +1,12 @@
+Google Account:
+Username: onehack.hackuci
+Password: JuanHackUC1
+
+Dashboard: https://console.developers.google.com/apis/dashboard?project=oneuci-155623&duration=PT1H
+
+Pages:
+Directions API: https://console.developers.google.com/apis/credentials/wizard?api=directions_backend&project=oneuci-155623
+Distance Matrix API: https://console.developers.google.com/apis/api/distance_matrix_backend/overview?project=oneuci-155623
+Geocoding API: https://console.developers.google.com/apis/api/geocoding_backend/overview?project=oneuci-155623&duration=PT1H
+
+Google API key: AIzaSyGeoA21fuOX1GVeuxQiu3CgWjhPGA_Y9cVmws
