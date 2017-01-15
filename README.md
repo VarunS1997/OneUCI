@@ -6,14 +6,19 @@ This file primarily describes the UCI_DATA_API; a simple API specifically design
 
 1. [TODOs](#todos)
 
-1. [Usage](#usage)
-1. [Requirements](#requirements)
-1. [Development](#develompent)
+1. [App Usage](#usage (APP))
+2. [API Usage](#usage (API))
+3. [Parser Usage](#usage (Parser))
+4. [Requirements](#requirements)
+5. [Development](#develompent)
 
 ## Installation
 Simply import the UCI_DATA_API.py module into the module you intend to use the API.
 
 For lightweight, HTML parsing, implement the OneHack_HTML_Parser.py module.
+
+## Usage (APP)
+Simply run the main.py module.
 
 ## Usage (API)
 To use the module, start by creating either a FoodDataManager or ClassDataManager class.
@@ -27,6 +32,8 @@ Each of these classes supports the same standard sequence of events:
 From that point, the parsed result can be obtained as a JSON file through UCI_DATA_API.getJSON()
 or as a python dictionary though UCI_DATA_API.get_result().
 
+Tests can also be preformed by running the UCI_DATA_API.py file.
+
 ## Usage (Parser)
  After construction, one of the following functions must be called and bound to the parser:
     - get_HTML_from_url
@@ -35,6 +42,8 @@ or as a python dictionary though UCI_DATA_API.get_result().
  Each specifies a different type of html source, and at least one must be selected before continuing.
 
  To initiate parsing, call HTMLReferenceTree.parse_data. The resulting parser state can then carry out find operations on the data.
+
+ Tests can also be preformed by running the OneHack_HTML_Parser.py file.
 
 ## Requirements
 
