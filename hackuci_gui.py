@@ -1,5 +1,5 @@
 import tkinter as tk
-from debugging import *
+#from debugging import *
 from datetime import date
 
 def get_dimmensions():
@@ -21,6 +21,8 @@ class GUI:
         self.__buttons = []
         self.__button_images = []
         self.__current_button = 3
+        self.__xorigin = 0
+        self.__yorigin = 0
 
         self.__top = tk.Tk()
 
@@ -37,6 +39,9 @@ class GUI:
 
         self.__content_canvas = tk.Canvas(master = self.__top, width=self.__DISPLAY_WIDTH, height=self.__DISPLAY_HEIGHT-self.__DIMMENSIONS["navigation"][1])
         self.__content_canvas.grid(row = 0, column = 0, sticky = tk.N + tk.S + tk.W + tk.E)
+        self.__content_canvas.bind('<Button-1>', self.__set_origin)
+        self.__content_canvas.bind('<B1-Motion>', self.__scroll_scrollables)
+        self.__content_canvas.bind('<Motion>', self.__set_scroll_last)
         self.__content_canvas.bind('<Configure>', self.draw_content)
 
         self.__nav_canvas = tk.Canvas(master = self.__top, width=self.__DISPLAY_WIDTH, height=self.__DIMMENSIONS["navigation"][1], cursor='hand2')
@@ -56,7 +61,7 @@ class GUI:
 
     def handle_radio(self, event):
         button_num = (event.x // self.__DIMMENSIONS["navigation"][0]) + 1
-        debug_print("Clicked at ({0},{1}) => # {2})".format(event.x, event.y, button_num))
+        #debug_print("Clicked at ({0},{1}) => # {2})".format(event.x, event.y, button_num))
         self.__current_button = button_num
         self.redraw()
 
@@ -97,12 +102,35 @@ class GUI:
             self.__draw_events()
 
     def draw_block(self, time1, time2,  place):
-        pass
+        #check for space to draw the box
+        ycoord = 50 + (self.block_counter * 50)
+        block = self.__content_canvas.create_rectangle(0, ycoord, 400, ycoord + 30, fill="red", tags="scrollable")
+        text = self.__content_canvas.create_text(200, ycoord + 20, text=time1 + "-" + time2 + " : " + place, tags="scrollable")
+        self.block_counter += 1
+
+    def __set_origin(self, event):
+        self.__xorigin, self.__yorigin = event.x, event.y
 
     def __draw_planner(self):
         self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
 
         self.__content_canvas.create_text(200, 20, fill="white", font="Helvetica 20 bold italic", text=date.today().strftime("%A, %B %d %Y"))
+
+        self.block_counter = 0
+        #example boxes
+        self.draw_block("5:00", "6:00", "DBH")
+        self.draw_block("7:00", "7:50", "MSTB")
+        self.draw_block("9:00", "9:50", "SC2")
+        
+        self.__content_canvas.tag_lower("scrollable")
+
+    def __scroll_scrollables(self, event):
+        if self.__yorigin != event.y:
+            self.__content_canvas.move("scrollable", 0, event.y - self.yscroll_last)
+        self.yscroll_last = event.y
+        
+    def __set_scroll_last(self, event):
+        self.yscroll_last = event.y
 
     def __draw_food(self):
         self.__content_canvas.create_rectangle(0, 0, self.__DISPLAY_WIDTH, self.__DIMMENSIONS["banner"][1], fill=self.__PRIMARY_COLOR)
