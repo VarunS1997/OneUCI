@@ -1,5 +1,12 @@
 # OneUCI APP
 
+Created by the OneHack Hack UCI Team:
+Norman E.
+Varun S.
+Simon L.
+Shaun
+Johnathan
+
 This file primarily describes the UCI_DATA_API; a simple API specifically designed to streamline the reading of data from UCI's food and course data. The OneUCI app utilizes this API heavily in order to generate a user-friendly interface for viewing and interacting with the large volume of data.
 
 ## Table of Contents
@@ -83,3 +90,4 @@ In addition to these basic examples, running ```OneHack_HTML_Parser.py``` or ```
 1. Sort and Display Food data based on time of day
 2. Make webreg form fields scrollable
 3. Write a better self test for UCI_DATA_API
+4. Double check names at the top of this file and add people to the devpost
