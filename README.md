@@ -45,6 +45,7 @@ For more information, visit our github page: https://github.com/VarunS1997/OneUC
 1. Write a better self test for UCI_DATA_API
 2. Something with events page? Ability to add events at least?
 3. Prevent "over scrolling"
+4. Clean up some of the gui prototyping code
 
 ## Installation
 Simply import the ```UCI_DATA_API.py``` module into the module you intend to use the API.
