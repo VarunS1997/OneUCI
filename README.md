@@ -9,6 +9,7 @@ This file primarily describes the UCI_DATA_API; a simple API specifically design
 1. [App Usage](#usage-app)
 2. [API Usage](#usage-api)
 3. [Parser Usage](#usage-parser)
+4. [Examples]($eamples)
 4. [Requirements](#requirements)
 5. [Development](#develompent)
 
@@ -44,6 +45,23 @@ Tests can also be preformed by running the UCI_DATA_API.py file.
  To initiate parsing, call ```HTMLReferenceTree.parse_data()```. The resulting parser state can then carry out find operations on the data.
 
  Tests can also be preformed by running the ```OneHack_HTML_Parser.py``` file.
+
+## Examples
+Some basic examples:
+```
+courseManager = ClassDataManager()
+courseManager.set_html_target()
+courseManager.process_available_data()
+courseManager.process_result()
+print(courseManager.getJSON())
+
+foodManager = FoodDataManager()
+foodManager.get_pippins_food()
+foodManager.process_available_data()
+foodManager.process_result()
+```
+
+In addition to these basic examples, running ```OneHack_HTML_Parser.py``` or ```UCI_DATA_API.py``` will start testing programs.
 
 ## Requirements
 
