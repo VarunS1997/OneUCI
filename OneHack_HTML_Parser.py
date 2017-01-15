@@ -155,11 +155,12 @@ class ReferencedHTMLTree(HTMLParser):
 
     def get_HTML_from_file(self, filepath:str):
         debug_print("Attempting to read file data")
+        fileobj = None
         try:
             fileobj = open(filepath, "r")
             self.__html = fileobj.read()
         finally:
-            if(fileobj):
+            if(fileobj != None):
                 fileobj.close()
             if(self.__html == ""):
                 debug_print("File data reading failed")
@@ -169,11 +170,12 @@ class ReferencedHTMLTree(HTMLParser):
 
     def get_HTML_from_url(self, url:str):
         debug_print("Attempting to read url data")
+        socket = None
         try:
             socket = urllib.request.urlopen(url)
             self.__html = socket.read().decode(encoding = "utf-8")
         finally:
-            if(socket):
+            if(socket != None):
                 socket.close()
             if(self.__html == ""):
                 debug_print("Url data reading failed")
