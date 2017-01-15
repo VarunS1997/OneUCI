@@ -1,11 +1,11 @@
 # OneUCI APP
 
-Created by the OneHack Hack UCI Team:
- Norman E.
- Varun S.
- Simon L.
- Shawn H.
- Johnathan C.
+Created by the OneHack Hack UCI Team:\n
+ Norman E.\n
+ Varun S.\n
+ Simon L.\n
+ Shawn H.\n
+ Johnathan C.\n
 
 This file primarily describes the UCI_DATA_API; a simple API specifically designed to streamline the reading of data from UCI's food and course data. The OneUCI app utilizes this API heavily in order to generate a user-friendly interface for viewing and interacting with the large volume of data.
 
