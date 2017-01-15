@@ -6,8 +6,8 @@ This file primarily describes the UCI_DATA_API; a simple API specifically design
 
 1. [TODOs](#todos)
 
-1. [App Usage](#usage (APP))
-2. [API Usage](#usage (API))
+1. [App Usage](#usage)
+2. [API Usage](#usage (api))
 3. [Parser Usage](#usage (Parser))
 4. [Requirements](#requirements)
 5. [Development](#develompent)
