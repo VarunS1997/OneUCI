@@ -82,8 +82,9 @@ class GUI:
         self.__entry_vars = []
         for field in self.__entry_fields:
             var = tk.StringVar()
-            var.set(field)
+            var.set("")
             self.__entry_vars.append(var)
+        self.__entry_vars[0].set("I&C SCI")
         self.__classDataManager = None
         self.__submit_button = None
 
@@ -355,25 +356,23 @@ class GUI:
     def __content_click(self, event):
         self.__set_origin(event)
 
-        if(self.__current_button == 3):
-            closest = event.widget.find_closest(event.x, event.y)
+        if(self.__current_button in [3, 4]):
+            closest = event.widget.find_overlapping(event.x, event.y, event.x+1, event.y+1)
             under = event.widget.find_below(closest)
-            if(len(under) == 0):
+            if(len(closest) == 0):
+                return
+            elif(len(under) == 0):
                 under = closest # lazy af
 
-            for i, course in enumerate(self.__course_buttons):
-                if(course in [closest[0], under[0]]):
-                    self.fetch_new_map(self.__classes[i].split("@ ")[-1])
-                    self.go_to_tab(1)
-        elif(self.__current_button == 4):
-            closest = event.widget.find_closest(event.x, event.y)
-            under = event.widget.find_below(closest)
-            if(len(under) == 0):
-                under = closest # lazy af
-
-            if(self.__submit_button in [closest[0], under[0]]):
-                self.__fetch_class_data()
-                self.redraw()
+            if(self.__current_button == 3):
+                for i, course in enumerate(self.__course_buttons):
+                    if(course in [closest[0], under[0]]):
+                        self.fetch_new_map(self.__classes[i].split("@ ")[-1])
+                        self.go_to_tab(1)
+            elif(self.__current_button == 4):
+                if(self.__submit_button in [closest[0], under[0]]):
+                    self.__fetch_class_data()
+                    self.redraw()
 
     def __set_origin(self, event):
         self.__xorigin, self.__yorigin = event.x, event.y
