@@ -24,6 +24,17 @@ class GUI:
 
         self.__top = tk.Tk()
 
+        self.icons = [tk.PhotoImage(file='icons/uci_maps.gif'),
+                tk.PhotoImage(file='icons/uci_food.gif'),
+                tk.PhotoImage(file='icons/uci_planner.gif'),
+                tk.PhotoImage(file='icons/uci_webreg.gif'),
+                tk.PhotoImage(file='icons/uci_events.gif'),
+                tk.PhotoImage(file='icons/uci_maps_selected.gif'),
+                tk.PhotoImage(file='icons/uci_food_selected.gif'),
+                tk.PhotoImage(file='icons/uci_planner_selected.gif'),
+                tk.PhotoImage(file='icons/uci_webreg_selected.gif'),
+                tk.PhotoImage(file='icons/uci_events_selected.gif')]
+
         self.__content_canvas = tk.Canvas(master = self.__top, width=self.__DISPLAY_WIDTH, height=self.__DISPLAY_HEIGHT-self.__DIMMENSIONS["navigation"][1])
         self.__content_canvas.grid(row = 0, column = 0, sticky = tk.N + tk.S + tk.W + tk.E)
         self.__content_canvas.bind('<Configure>', self.draw_content)
@@ -61,14 +72,11 @@ class GUI:
             x0 = i * self.__DIMMENSIONS["navigation"][0]
             y0 = 0
 
-            img_loc = ['uci_planner','uci_food','uci_maps','uci_webreg','uci_events']
-
             if i+1 == self.__current_button:
-                self.icon = tk.PhotoImage(file='icons/' + img_loc[i] + '_selected.gif')
+                self.__buttons.append(self.__nav_canvas.create_image(x0 - 39 + self.__DIMMENSIONS["navigation"][0], y0 - 39 + self.__DIMMENSIONS["navigation"][1], image=self.icons[i+5]))
             else:
-                self.icon = tk.PhotoImage(file='icons/' + img_loc[i] + '.gif')
+                self.__buttons.append(self.__nav_canvas.create_image(x0 - 39 + self.__DIMMENSIONS["navigation"][0], y0 - 39 + self.__DIMMENSIONS["navigation"][1], image=self.icons[i]))
 
-            self.__buttons.append(self.__nav_canvas.create_image(x0 - 39 + self.__DIMMENSIONS["navigation"][0], y0 - 39 + self.__DIMMENSIONS["navigation"][1], image=self.icon))
 
             
                 
