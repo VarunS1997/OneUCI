@@ -1,5 +1,5 @@
 from html.parser import HTMLParser
-from debugging import *
+from UDA_debugging import *
 import urllib.request
 
 class RetrievalFailure(Exception):
@@ -129,7 +129,7 @@ class HTMLNode:
             return self.get_id() <= str(other)
 
 
-class HTMLTree(HTMLParser):
+class ReferencedHTMLTree(HTMLParser):
     processed_chars = 0
 
     def __init__(self):
@@ -141,7 +141,7 @@ class HTMLTree(HTMLParser):
 
         self.__id_nodes = []
 
-        super(HTMLTree, self).__init__()
+        super(ReferencedHTMLTree, self).__init__()
         debug_print("Tree constructed")
 
     def reset_data_struct(self):
@@ -200,25 +200,25 @@ class HTMLTree(HTMLParser):
     def handle_endtag(self, tag):
         self.__current_node = self.__current_node.get_parent() or self.__current_node
 
-    def handle_data(self, data):
-        if(data.strip() == ""):
+    def handle_data(self, data_in):
+        if(data_in.strip() == ""):
             return
         else:
-            data = data.strip()
+            data_in = data_in.strip()
 
-        debug_print("Found data: " + data)
-        newNode = HTMLNode(self.__current_node, NodeType.data, data)
+        debug_print("Found data: " + data_in)
+        newNode = HTMLNode(self.__current_node, NodeType.data, data_in)
         if(self.__current_node != None):
             self.__current_node.add_child(newNode)
 
     def parse_data(self):
         debug_print("Parsing... ")
         self.reset_data_struct()
-        HTMLTree.processed_chars += len(self.__html)
+        ReferencedHTMLTree.processed_chars += len(self.__html)
         self.feed(self.__html)
-        debug_print("Parsing: Complete; chars processed: " + len(self.__html))
+        debug_print("Parsing: Complete; chars processed: " + str(int(len(self.__html))))
 
-    def find_nodes_by_attribute(self, attr: str, value: str):
+    def find_nodes_by_attribute(self, attr: str, value: str, short=False):
         debug_print("Searching for attribute: {0} == {1} in:\n".format(attr, value))
         debug_print(str(self))
         debug_print("Top Node: " + str(self.__top_node))
@@ -234,6 +234,61 @@ class HTMLTree(HTMLParser):
 
             if(node.get_attribute(attr) == value):
                 debug_print("Attribute found")
+                if(short):
+                    return [node]
+                result.append(node)
+
+            if(node.has_children()):
+                to_search = to_search + node.get_children()
+
+        debug_print("No results" if len(result) == 0 else "Results found")
+        return result
+
+    def find_nodes_by_tag(self, tag: str):
+        debug_print("Searching for tag: {0} in:\n".format(tag))
+        debug_print(str(self))
+        debug_print("Top Node: " + str(self.__top_node))
+
+        result = []
+
+        to_search = [self.__top_node]
+
+        while(len(to_search) > 0):
+            node = to_search.pop()
+            debug_print("Scanning node: " + str(node))
+            debug_print("Remaining Scans: ", [str(node) for node in to_search])
+
+            if(node.get_type() == NodeType.tag and node.get_data() == tag):
+                debug_print("Tag found")
+                result.append(node)
+
+            if(node.has_children()):
+                to_search = to_search + node.get_children()
+
+        debug_print("No results" if len(result) == 0 else "Results found")
+        return result
+
+    def find_nodes_by_attributes(self, attr: [str], value: [str]):
+        debug_print("Searching for attributes: {0} == {1} in:\n".format(str(attr), str(value)))
+        debug_print(str(self))
+        debug_print("Top Node: " + str(self.__top_node))
+
+        result = []
+
+        to_search = [self.__top_node]
+
+        while(len(to_search) > 0):
+            node = to_search.pop()
+            debug_print("Scanning node: " + str(node))
+            debug_print("Remaining Scans: ", [str(node) for node in to_search])
+
+            match = True
+            for attribute in attr:
+                if(node.get_attribute(attribute) == None):
+                    match = False
+                    break
+            if(match):
+                debug_print("Attributes found")
                 result.append(node)
 
             if(node.has_children()):
@@ -310,7 +365,7 @@ class HTMLTree(HTMLParser):
 
             return result
         else:
-            return []
+            return "<Empty Tree>"
 
     def __insert_node(self, node: HTMLNode): # insertion sort implementation
         pointerIndex = 0
@@ -327,7 +382,7 @@ if __name__ == '__main__':
     destination = input("Enter test location: ")
     set_debugging(input("Debugging? (Y/N) ").lower() == "y")
 
-    testTree = HTMLTree()
+    testTree = ReferencedHTMLTree()
 
     if(urlFormat):
         testTree.get_HTML_from_url(destination)
@@ -345,6 +400,6 @@ if __name__ == '__main__':
             results = testTree.find_nodes_by_attribute(input("Attribute: "), input("Attribute value: "))
             print("Results: ", [str(node) for node in results])
         elif(command == "proc"):
-            print(HTMLTree.processed_chars)
+            print(ReferencedHTMLTree.processed_chars)
         command = input("[ID/ATTR/PROC/QUIT]: ").lower()
     print("TESTS CONCLUDED")

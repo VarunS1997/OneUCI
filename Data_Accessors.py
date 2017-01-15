@@ -1,5 +1,5 @@
-from HTML_Scraper import *
-from debugging import *
+from OneHack_HTML_Parser import *
+from UDA_debugging import *
 import urllib
 
 # DATA ACCESSORS
