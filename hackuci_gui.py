@@ -28,7 +28,7 @@ class GUI:
         self.__tile_margins = 10
         self.__FOOD_COUNT = 0
         self.__DAY_COUNT = 0
-
+        self.__map_icon = 10
 
         self.__top = tk.Tk()
 
@@ -198,7 +198,7 @@ class GUI:
             string = food + "\n" + food_dict[food]
 
             self.draw_textblock(self.__content_canvas, string, 0, i * self.__DIMMENSIONS["food"][1] + i* self.__tile_margins, self.__DIMMENSIONS["food"][0], self.__DIMMENSIONS["food"][1], scrollable=True)
-            
+
         self.__content_canvas.tag_lower("scrollable")
 
     def __draw_planner(self):
