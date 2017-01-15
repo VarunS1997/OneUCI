@@ -26,9 +26,21 @@ food3.process_available_data()
 food3.process_result()
 brand = json.loads(food3.getJSON())
 
+# print("STARTING TESTS")
+# courseManager = ClassDataManager()
+# print("SETTING HTML")
+# courseManager.set_html_target()
+# print("Processing Data")
+# courseManager.process_available_data()
+# print("Finalizing Answer")
+# courseManager.process_result()
+# print("Printing JSON")
+# print(courseManager.getJSON())
+
+
 gui.retrieve_food(pip, brand, ant)
 
-
+input()
     
     
 
