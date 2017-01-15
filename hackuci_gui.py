@@ -77,6 +77,8 @@ class GUI:
         self.ant_breakFast = {}
         self.ant_lunch = {}
         self.ant_dinner = {}
+        self.__food_tab = 0
+        self.__meal_buttons = []
 
         self.__entry_fields = ["Dept", "CourseNum"]
         self.__entry_vars = []
@@ -289,6 +291,8 @@ class GUI:
         self.__content_canvas.create_image(canvas_width/2, canvas_height/2, image=self.__icons[self.__current_icon])
 
     def __draw_food(self):
+        self.__meal_buttons = []
+
         food_dict = {}
         if(self.__FOOD_COUNT == 0):
             if(self.__FOOD_PERIOD == 0):
@@ -313,10 +317,22 @@ class GUI:
             elif(self.__FOOD_PERIOD == 2):
                 food_dict = self.ant_dinner
 
+        meal_labels = ["Breakfast", "Lunch", "Dinner"]
+        meal_width = (self.__content_canvas.winfo_width() - self.__tile_margins * (len(meal_labels)-1)) / len(meal_labels)
+
         for i, food in enumerate(food_dict.keys()):
             string = food + "\n" + food_dict[food]
 
-            self.draw_textblock(self.__content_canvas, string, 0, i * self.__DIMMENSIONS["food"][1] + i* self.__tile_margins, self.__DIMMENSIONS["food"][0], self.__DIMMENSIONS["food"][1], scrollable=True)
+            self.draw_textblock(self.__content_canvas, string, 0, self.__DIMMENSIONS["navigation"][1] + self.__tile_margins + i * self.__DIMMENSIONS["food"][1] + i* self.__tile_margins, self.__DIMMENSIONS["food"][0], self.__DIMMENSIONS["food"][1], scrollable=True)
+
+        for i, meal in enumerate(meal_labels):
+            back_color = self.__PRIMARY_COLOR
+            font_color = self.__SECONDARY_COLOR
+            if(i == self.__food_tab):
+                font_color = self.__PRIMARY_COLOR
+                back_color = self.__SECONDARY_COLOR
+
+            self.__meal_buttons.append(self.draw_textblock(self.__content_canvas, meal, i * meal_width + self.__tile_margins * i, 0, meal_width, self.__DIMMENSIONS["navigation"][1], bg_color = back_color, text_color=font_color))
 
         self.__content_canvas.tag_lower("scrollable")
 
@@ -367,7 +383,7 @@ class GUI:
     def __content_click(self, event):
         self.__set_origin(event)
 
-        if(self.__current_button in [3, 4]):
+        if(self.__current_button in [2, 3, 4]):
             closest = event.widget.find_overlapping(event.x, event.y, event.x+1, event.y+1)
             under = event.widget.find_below(closest)
             if(len(closest) == 0):
@@ -375,10 +391,19 @@ class GUI:
             elif(len(under) == 0):
                 under = closest # lazy af
 
-            if(self.__current_button == 3):
+            if(self.__current_button == 2):
+                for i, meal in enumerate(self.__meal_buttons):
+                    if(meal in [closest[0], under[0]]):
+                        self.__food_tab = i
+                        self.redraw()
+            elif(self.__current_button == 3):
                 for i, course in enumerate(self.__course_buttons):
                     if(course in [closest[0], under[0]]):
-                        self.fetch_new_map(self.__classes[i].split("@ ")[-1])
+                        classes = self.__MWFclasses
+                        if(self.__DAY_COUNT in [1, 3]):
+                            classes = self.__TTclasses
+
+                        self.fetch_new_map(classes[i].split("@ ")[-1])
                         self.go_to_tab(1)
             elif(self.__current_button == 4):
                 if(self.__submit_button in [closest[0], under[0]]):
@@ -406,6 +431,8 @@ class GUI:
         else:
             if(button_num == 1):
                 self.fetch_new_map()
+            elif(button_num == 2):
+                self.__food_tab = 0
             self.__current_button = button_num
 
         self.redraw()
