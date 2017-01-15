@@ -81,6 +81,17 @@ class GUI:
         self.pip = pip
         self.brand = brand
         self.ant = ant
+    def fetch_new_map(self, classroom ='none'):
+        if classroom == 'ELH 100':
+            self.__content_canvas.create_image(200, 300, image=self.icons[2])
+        elif classroom == 'HH 178':
+            self.__content_canvas.create_image(200, 300, image=self.icons[6])
+        elif classroom == 'HSLH 100A':
+            self.__content_canvas.create_image(200, 300, image=self.icons[7])
+        elif classroom == 'ICS 174':
+            self.__content_canvas.create_image(200, 300, image=self.icons[8])
+        else:
+            self.__content_canvas.create_image(200, 300, image=self.icons[10])       
 
     #
     # CANVAS DRAWING
