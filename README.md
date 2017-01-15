@@ -23,7 +23,9 @@ This file primarily describes the UCI_DATA_API; a simple API specifically design
 5. [Development](#develompent)
 
 ## Highlights
-Coming soon...
+This project features a full API and working python-based application framework for either IOS or Android.
+
+For more information, visit our github page: https://github.com/VarunS1997/OneUCI.
 
 ## ROADMAP
  Firstly, various visual improvements could and should be implemented. Particularly on the food tab.
@@ -42,6 +44,7 @@ Coming soon...
 
 1. Write a better self test for UCI_DATA_API
 2. Something with events page? Ability to add events at least?
+3. Prevent "over scrolling"
 
 ## Installation
 Simply import the ```UCI_DATA_API.py``` module into the module you intend to use the API.

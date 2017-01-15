@@ -323,10 +323,13 @@ class GUI:
         meal_labels = ["Breakfast", "Lunch", "Dinner"]
         meal_width = (self.__content_canvas.winfo_width() - self.__tile_margins * (len(meal_labels)-1)) / len(meal_labels)
 
-        for i, food in enumerate(food_dict.keys()):
-            string = food + "\n" + food_dict[food]
+        if(len(food_dict) == 0):
+            self.draw_textblock(self.__content_canvas, "Closed", 0, self.__DIMMENSIONS["navigation"][1] + self.__tile_margins, self.__DIMMENSIONS["food"][0], self.__DIMMENSIONS["food"][1], scrollable=True)
+        else:
+            for i, food in enumerate(food_dict.keys()):
+                string = food + "\n" + food_dict[food]
 
-            self.draw_textblock(self.__content_canvas, string, 0, self.__DIMMENSIONS["navigation"][1] + self.__tile_margins + i * self.__DIMMENSIONS["food"][1] + i* self.__tile_margins, self.__DIMMENSIONS["food"][0], self.__DIMMENSIONS["food"][1], scrollable=True)
+                self.draw_textblock(self.__content_canvas, string, 0, self.__DIMMENSIONS["navigation"][1] + self.__tile_margins + i * self.__DIMMENSIONS["food"][1] + i* self.__tile_margins, self.__DIMMENSIONS["food"][0], self.__DIMMENSIONS["food"][1], scrollable=True)
 
         for i, meal in enumerate(meal_labels):
             back_color = self.__PRIMARY_COLOR
