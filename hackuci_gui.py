@@ -88,7 +88,8 @@ class GUI:
         self.__classDataManager = None
         self.__submit_button = None
 
-        self.__classes = ["CS 122B: 11:00-12:20 @ HSLH 100A", "CS 162: 12:30-1:50 @ ICS 174", "GEN&SEX 40B: 2:00-3:20 @ ELH 100", "CS 167: 3:30-4:50 @ HH 178"]
+        self.__MWFclasses = ["CS 122B (LEC): 11:00-12:20 @ HSLH 100A", "CS 162 (LEC): 12:30-1:50 @ ICS 174", "GEN&SEX 50B (LEC): 2:00-3:20 @ ELH 100", "CS 167 (LEC): 3:30-4:50 @ HH 178"]
+        self.__TTclasses = ["GEN&SEX 50B (DIS): 3:00-3:50 @ STT 238", "CS 162 (DIS): 4:00-4:50 @ DBH 1600"]
         self.__events = ["HACK UCI ALL DAY EVERY DAY", "122B PROJECT 1 DUE WED 11:55PM"]
         self.__classData = {}
 
@@ -321,29 +322,39 @@ class GUI:
 
     def __draw_planner(self):
         if(self.__DAY_COUNT in [0, 2, 4]):
-            for i, course in enumerate(self.__classes):
+            for i, course in enumerate(self.__MWFclasses):
+                self.__course_buttons.append(self.draw_textblock(self.__content_canvas, course, 0, i * self.__DIMMENSIONS["class"][1] + i* self.__tile_margins, self.__DIMMENSIONS["class"][0], self.__DIMMENSIONS["class"][1], scrollable=True))
+        else:
+            for i, course in enumerate(self.__TTclasses):
                 self.__course_buttons.append(self.draw_textblock(self.__content_canvas, course, 0, i * self.__DIMMENSIONS["class"][1] + i* self.__tile_margins, self.__DIMMENSIONS["class"][0], self.__DIMMENSIONS["class"][1], scrollable=True))
 
     def __draw_webReg(self):
-        counter = 0
-        for var in self.__entry_vars:
-            self.draw_textblock(self.__content_canvas, self.__entry_fields[counter], 0, counter * self.__DIMMENSIONS["event"][1] + counter*self.__tile_margins, self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], scrollable=True)
+        counter = len(self.__entry_vars)
+
+        if(self.__classData != None):
+            for course in self.__classData:
+                self.draw_textblock(self.__content_canvas, course, 0, counter * self.__DIMMENSIONS["event"][1] + (counter-len(self.__entry_vars))*self.__tile_margins, self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], center = True, scrollable=True)
+                counter += 1
+
+        for i, var in enumerate(self.__entry_vars):
+            back_color = self.__PRIMARY_COLOR
+            font_color = self.__SECONDARY_COLOR
+            if(i % 2 != 0):
+                font_color = self.__PRIMARY_COLOR
+                back_color = self.__SECONDARY_COLOR
+
+            self.draw_textblock(self.__content_canvas, self.__entry_fields[i], 0, i * self.__DIMMENSIONS["event"][1], self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], bg_color=back_color, text_color = font_color, modifier="bold")
 
             e = tk.Entry(self.__content_canvas, textvariable=var, width=25)
 
-            self.__content_canvas.create_window(self.__content_canvas.winfo_width()*7/10, (counter + .5) * self.__DIMMENSIONS["event"][1] + counter*self.__tile_margins, window = e)
+            self.__content_canvas.create_window(self.__content_canvas.winfo_width()*7/10, (i + .5) * self.__DIMMENSIONS["event"][1], window = e)
 
             self.__content_canvas.update()
 
             counter += 1
 
-        self.__submit_button = self.draw_textblock(self.__content_canvas, "Update Search!", 0, counter * self.__DIMMENSIONS["event"][1] + counter*self.__tile_margins, self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], center = True, scrollable=True)
+        self.__submit_button = self.draw_textblock(self.__content_canvas, "Update Search!", 0, len(self.__entry_vars) * self.__DIMMENSIONS["event"][1], self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], center = True, bg_color=self.__PRIMARY_COLOR, text_color = self.__SECONDARY_COLOR)
         counter += 1
-
-        if(self.__classData != None):
-            for course in self.__classData:
-                self.draw_textblock(self.__content_canvas, course, 0, counter * self.__DIMMENSIONS["event"][1] + counter*self.__tile_margins, self.__DIMMENSIONS["event"][0], self.__DIMMENSIONS["event"][1], center = True, scrollable=True)
-                counter += 1
 
 
     def __draw_events(self):
