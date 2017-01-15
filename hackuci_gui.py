@@ -30,6 +30,7 @@ class GUI:
         self.__yorigin = 0
         self.__tile_margins = 10
         self.__FOOD_COUNT = 0
+        self.__FOOD_PERIOD = 0
         self.__DAY_COUNT = 0
 
         self.__current_icon = 10
@@ -70,7 +71,7 @@ class GUI:
 
         self.pip_breakfast = {}
         self.pip_lunch = {}
-        slef.pip_dinner = {}
+        self.pip_dinner = {}
         self.brand_lunch = {}
         self.brand_dinner = {}
         self.ant_breakFast = {}
@@ -96,29 +97,52 @@ class GUI:
         self.__top.mainloop()
 
     def initialize_data(self):
-        food1 = FoodDataManager()
-        food2 = FoodDataManager()
-        food3= FoodDataManager()
+        foodDataManager = FoodDataManager()
 
-        food1.get_pippins_food()
-        food1.process_available_data()
-        food1.process_result()
-        self.pip_breakfast = food1.get_result('breakfast')
-        self.pip_lunch = food1.get_result('lunch')
-        self.pip_dinner = food1.get_result('dinner')
+        foodDataManager.get_pippins_food('breakfast')
+        foodDataManager.process_available_data()
+        foodDataManager.process_result()
+        self.pip_breakfast = foodDataManager.get_result()
 
-        food2.get_anteatery_food()
-        food2.process_available_data()
-        food2.process_result()
-        self.ant_breakfast = food2.get_result('breakfast')
-        self.ant_lunch = food2.get_result('lunch')
-        self.ant_dinner = food2.get_result('dinner')
+        foodDataManager.get_pippins_food('lunch')
+        foodDataManager.process_available_data()
+        foodDataManager.process_result()
+        self.pip_lunch = foodDataManager.get_result()
 
-        food3.get_brandy_food()
-        food3.process_available_data()
-        food3.process_result()
-        self.brand_lunch = food3.get_result('lunch')
-        self.brand_dinner = food3.get_result('dinner')
+        foodDataManager.get_pippins_food('dinner')
+        foodDataManager.process_available_data()
+        foodDataManager.process_result()
+        self.pip_dinner = foodDataManager.get_result()
+
+        foodDataManager.get_brandy_food('breakfast')
+        foodDataManager.process_available_data()
+        foodDataManager.process_result()
+        self.brand_breakfast = foodDataManager.get_result()
+
+        foodDataManager.get_brandy_food('lunch')
+        foodDataManager.process_available_data()
+        foodDataManager.process_result()
+        self.brand_lunch = foodDataManager.get_result()
+
+        foodDataManager.get_brandy_food('dinner')
+        foodDataManager.process_available_data()
+        foodDataManager.process_result()
+        self.brand_dinner = foodDataManager.get_result()
+
+        foodDataManager.get_anteatery_food('breakfast')
+        foodDataManager.process_available_data()
+        foodDataManager.process_result()
+        self.ant_breakfast = foodDataManager.get_result()
+
+        foodDataManager.get_anteatery_food('lunch')
+        foodDataManager.process_available_data()
+        foodDataManager.process_result()
+        self.ant_lunch = foodDataManager.get_result()
+
+        foodDataManager.get_anteatery_food('dinner')
+        foodDataManager.process_available_data()
+        foodDataManager.process_result()
+        self.ant_dinner = foodDataManager.get_result()
 
         self.__classDataManager = ClassDataManager()
 
@@ -253,14 +277,6 @@ class GUI:
 
         return boundingBox
 
-    def draw_block(self, class_name, time1, time2,  place):
-        #check for space to draw the box
-        ycoord = 100 + (self.block_counter * 50)
-        #block = self.__content_canvas.create_rectangle(0, ycoord, 400, ycoord + 30, fill="red", tags="scrollable")
-        text = self.__content_canvas.create_text(200, ycoord + 20,fill="blue", font='Courier 16 bold', text=class_name + ': ' + time1 + "-" + time2 + " @ " + place, tags="scrollable")
-
-        self.block_counter += 1
-
     #
     # DRAWING MACROS
     #
@@ -273,11 +289,27 @@ class GUI:
     def __draw_food(self):
         food_dict = {}
         if(self.__FOOD_COUNT == 0):
-            food_dict = self.pip
+            if(self.__FOOD_PERIOD == 0):
+                food_dict = self.pip_breakfast
+            elif(self.__FOOD_PERIOD == 1):
+                food_dict = self.pip_lunch
+            elif(self.__FOOD_PERIOD == 2):
+                food_dict = self.pip_dinner
+
         elif(self.__FOOD_COUNT == 1):
-            food_dict = self.brand
+            if(self.__FOOD_PERIOD == 0):
+                food_dict = self.brand_lunch
+            elif(self.__FOOD_PERIOD == 1):
+                food_dict = self.brand_lunch
+            elif(self.__FOOD_PERIOD == 2):
+                food_dict = self.brand_dinner
         elif(self.__FOOD_COUNT == 2):
-            food_dict = self.ant
+            if(self.__FOOD_PERIOD == 0):
+                food_dict = self.ant_breakfast
+            elif(self.__FOOD_PERIOD == 1):
+                food_dict = self.ant_lunch
+            elif(self.__FOOD_PERIOD == 2):
+                food_dict = self.ant_dinner
 
         for i, food in enumerate(food_dict.keys()):
             string = food + "\n" + food_dict[food]
